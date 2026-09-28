@@ -1,0 +1,12 @@
+node_modules
+dist
+dist-ssr
+*.local
+.DS_Store
+*.log
+
+# 参考用的第三方页面快照（HLTV 地图卡样式），非项目源文件
+HLTV*.html
+
+# 用户提供的原始素材（PNG 原图/参考页面），入库的是转换后的 public/maps/*.webp
+data/

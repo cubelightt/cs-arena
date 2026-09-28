@@ -1,0 +1,31 @@
+# Secrets and local configuration
+.env*
+!.env.example
+**/.env*
+!**/.env.example
+
+# Runtime data and generated output
+*.db
+*.db-wal
+*.db-shm
+*.log
+*.dem
+node_modules/
+dist/
+coverage/
+backend/data/
+backend/demos/
+frontend_winui/dist/
+
+# Local model instructions
+AGENTS.md
+CLAUDE.md
+.codex/
+.claude/
+
+# Sanitized Docker deployment example
+!.env.docker.example
+backups/
+
+# Default Docker bind-mounted runtime data
+/data/

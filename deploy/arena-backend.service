@@ -1,0 +1,21 @@
+[Unit]
+Description=CS Arena platform backend (Express + Socket.IO)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=arena
+Group=arena
+WorkingDirectory=/opt/cs-arena/backend
+EnvironmentFile=-/etc/arena/backend.env
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=3
+KillSignal=SIGTERM
+TimeoutStopSec=20
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

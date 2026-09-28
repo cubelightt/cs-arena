@@ -1,0 +1,1230 @@
+/* SPDX-License-Identifier: GPL-3.0-only
+ * Copyright (C) 2026 cubelightt
+ * WinUI design tokens retain their MIT notice; see THIRD_PARTY_NOTICES.md.
+ */
+
+@import 'tailwindcss';
+
+/*
+ * frontend_winui 设计系统 —— Windows 11 / WinUI 3 外观
+ *
+ * 令牌取值来源：microsoft/microsoft-ui-xaml（MIT 许可）
+ *   controls/dev/CommonStyles/Common_themeresources_any.xaml  （颜色：Default=深色，Light=浅色）
+ *   controls/dev/CommonStyles/CornerRadius_themeresources.xaml （圆角 4 / 8）
+ * 强调色：Windows 默认强调色 #0078D4 的标准色阶（系统强调色本身可由用户配置，
+ *   这里给出默认值；深色主题用 Light2、浅色主题用 Dark1，与 WinUI 资源引用一致）。
+ * 字体：只引用字体族名（'Segoe UI Variable Text' 等），不打包任何字体文件。
+ */
+
+/* ───────────────────────── 调色板（来自上述 MIT 源） ───────────────────────── */
+
+:root {
+  /* 深色主题：Common_themeresources_any.xaml → ThemeDictionaries/Default */
+  --d-solid-base: #202020;
+  --d-solid-secondary: #1c1c1c;
+  --d-solid-tertiary: #282828;
+  --d-solid-quarternary: #2c2c2c;
+  --d-solid-base-alt: #0a0a0a;
+  --d-text-primary: #ffffff;
+  --d-text-secondary: #ffffffc5;
+  --d-text-tertiary: #ffffff87;
+  --d-text-disabled: #ffffff5d;
+  --d-control-fill: #ffffff0f;
+  --d-control-fill-secondary: #ffffff15;
+  --d-control-fill-tertiary: #ffffff08;
+  --d-control-fill-disabled: #ffffff0b;
+  --d-control-solid: #454545;
+  --d-control-stroke: #ffffff12;
+  --d-control-stroke-secondary: #ffffff18;
+  --d-control-strong-fill: #ffffff8b;
+  --d-control-strong-stroke: #ffffff8b;
+  --d-card-bg: #ffffff0d;
+  --d-card-stroke: #00000019;
+  --d-subtle-secondary: #ffffff0f;
+  --d-subtle-tertiary: #ffffff0a;
+  --d-divider: #ffffff15;
+  --d-accent: #3baaff; /* SystemAccentColorLight2 */
+  --d-accent-text: #6ec0ff; /* SystemAccentColorLight3 */
+  --d-accent-disabled: #ffffff28;
+  --d-on-accent: #000000;
+  --d-on-accent-secondary: #00000080;
+  --d-on-accent-disabled: #ffffff87;
+  --d-layer: #3a3a3a4c;
+  --d-layer-on-acrylic: #ffffff09;
+  --d-stroke-on-accent: #ffffff14;
+  --d-focus-outer: #ffffff;
+  --d-focus-inner: #000000b3;
+  --d-success: #6ccb5f;
+  --d-success-bg: #393d1b;
+  --d-caution: #fce100;
+  --d-caution-bg: #433519;
+  --d-critical: #ff99a4;
+  --d-critical-bg: #442726;
+  --d-neutral: #ffffff8b;
+  --d-neutral-bg: #ffffff08;
+
+  /* 浅色主题：Common_themeresources_any.xaml → ThemeDictionaries/Light */
+  --l-solid-base: #f3f3f3;
+  --l-solid-secondary: #eeeeee;
+  --l-solid-tertiary: #f9f9f9;
+  --l-solid-quarternary: #ffffff;
+  --l-solid-base-alt: #dadada;
+  --l-text-primary: #000000e4;
+  --l-text-secondary: #0000009e;
+  --l-text-tertiary: #00000072;
+  --l-text-disabled: #0000005c;
+  --l-control-fill: #ffffffb3;
+  --l-control-fill-secondary: #f9f9f980;
+  --l-control-fill-tertiary: #f9f9f94d;
+  --l-control-fill-disabled: #f9f9f94d;
+  --l-control-solid: #ffffff;
+  --l-control-stroke: #0000000f;
+  --l-control-stroke-secondary: #00000029;
+  --l-control-strong-fill: #00000072;
+  --l-control-strong-stroke: #00000072;
+  --l-card-bg: #ffffffb3;
+  --l-card-stroke: #0000000f;
+  --l-subtle-secondary: #00000009;
+  --l-subtle-tertiary: #00000006;
+  --l-divider: #0000000f;
+  --l-accent: #005ba1; /* SystemAccentColorDark1 */
+  --l-accent-text: #005ba1;
+  --l-accent-disabled: #00000037;
+  --l-on-accent: #ffffff;
+  --l-on-accent-secondary: #ffffffb3;
+  --l-on-accent-disabled: #ffffff;
+  --l-layer: #ffffff80;
+  --l-layer-on-acrylic: #ffffff40;
+  --l-stroke-on-accent: #ffffff14;
+  --l-focus-outer: #000000e4;
+  --l-focus-inner: #ffffffb3;
+  --l-success: #0f7b0f;
+  --l-success-bg: #dff6dd;
+  --l-caution: #9d5d00;
+  --l-caution-bg: #fff4ce;
+  --l-critical: #c42b1c;
+  --l-critical-bg: #fde7e9;
+  --l-neutral: #00000072;
+  --l-neutral-bg: #00000006;
+}
+
+/* 令牌别名：默认浅色，跟随系统时用深色，.theme-dark / .theme-light 可强制 */
+:root {
+  --solid-base: var(--l-solid-base);
+  --solid-secondary: var(--l-solid-secondary);
+  --solid-tertiary: var(--l-solid-tertiary);
+  --solid-quarternary: var(--l-solid-quarternary);
+  --solid-base-alt: var(--l-solid-base-alt);
+  --text-primary: var(--l-text-primary);
+  --text-secondary: var(--l-text-secondary);
+  --text-tertiary: var(--l-text-tertiary);
+  --text-disabled: var(--l-text-disabled);
+  --control-fill: var(--l-control-fill);
+  --control-fill-secondary: var(--l-control-fill-secondary);
+  --control-fill-tertiary: var(--l-control-fill-tertiary);
+  --control-fill-disabled: var(--l-control-fill-disabled);
+  --control-solid: var(--l-control-solid);
+  --control-stroke: var(--l-control-stroke);
+  --control-stroke-secondary: var(--l-control-stroke-secondary);
+  --control-strong-fill: var(--l-control-strong-fill);
+  --control-strong-stroke: var(--l-control-strong-stroke);
+  --card-bg: var(--l-card-bg);
+  --card-stroke: var(--l-card-stroke);
+  --subtle-secondary: var(--l-subtle-secondary);
+  --subtle-tertiary: var(--l-subtle-tertiary);
+  --divider: var(--l-divider);
+  --accent: var(--l-accent);
+  --accent-text: var(--l-accent-text);
+  --accent-disabled: var(--l-accent-disabled);
+  --on-accent: var(--l-on-accent);
+  --on-accent-secondary: var(--l-on-accent-secondary);
+  --on-accent-disabled: var(--l-on-accent-disabled);
+  --layer: var(--l-layer);
+  --layer-on-acrylic: var(--l-layer-on-acrylic);
+  --stroke-on-accent: var(--l-stroke-on-accent);
+  --focus-outer: var(--l-focus-outer);
+  --focus-inner: var(--l-focus-inner);
+  --success: var(--l-success);
+  --success-bg: var(--l-success-bg);
+  --caution: var(--l-caution);
+  --caution-bg: var(--l-caution-bg);
+  --critical: var(--l-critical);
+  --critical-bg: var(--l-critical-bg);
+  --neutral: var(--l-neutral);
+  --neutral-bg: var(--l-neutral-bg);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.theme-light) {
+    --solid-base: var(--d-solid-base);
+    --solid-secondary: var(--d-solid-secondary);
+    --solid-tertiary: var(--d-solid-tertiary);
+    --solid-quarternary: var(--d-solid-quarternary);
+    --solid-base-alt: var(--d-solid-base-alt);
+    --text-primary: var(--d-text-primary);
+    --text-secondary: var(--d-text-secondary);
+    --text-tertiary: var(--d-text-tertiary);
+    --text-disabled: var(--d-text-disabled);
+    --control-fill: var(--d-control-fill);
+    --control-fill-secondary: var(--d-control-fill-secondary);
+    --control-fill-tertiary: var(--d-control-fill-tertiary);
+    --control-fill-disabled: var(--d-control-fill-disabled);
+    --control-solid: var(--d-control-solid);
+    --control-stroke: var(--d-control-stroke);
+    --control-stroke-secondary: var(--d-control-stroke-secondary);
+    --control-strong-fill: var(--d-control-strong-fill);
+    --control-strong-stroke: var(--d-control-strong-stroke);
+    --card-bg: var(--d-card-bg);
+    --card-stroke: var(--d-card-stroke);
+    --subtle-secondary: var(--d-subtle-secondary);
+    --subtle-tertiary: var(--d-subtle-tertiary);
+    --divider: var(--d-divider);
+    --accent: var(--d-accent);
+    --accent-text: var(--d-accent-text);
+    --accent-disabled: var(--d-accent-disabled);
+    --on-accent: var(--d-on-accent);
+    --on-accent-secondary: var(--d-on-accent-secondary);
+    --on-accent-disabled: var(--d-on-accent-disabled);
+    --layer: var(--d-layer);
+    --layer-on-acrylic: var(--d-layer-on-acrylic);
+    --stroke-on-accent: var(--d-stroke-on-accent);
+    --focus-outer: var(--d-focus-outer);
+    --focus-inner: var(--d-focus-inner);
+    --success: var(--d-success);
+    --success-bg: var(--d-success-bg);
+    --caution: var(--d-caution);
+    --caution-bg: var(--d-caution-bg);
+    --critical: var(--d-critical);
+    --critical-bg: var(--d-critical-bg);
+    --neutral: var(--d-neutral);
+    --neutral-bg: var(--d-neutral-bg);
+  }
+}
+
+:root.theme-dark {
+  --solid-base: var(--d-solid-base);
+  --solid-secondary: var(--d-solid-secondary);
+  --solid-tertiary: var(--d-solid-tertiary);
+  --solid-quarternary: var(--d-solid-quarternary);
+  --solid-base-alt: var(--d-solid-base-alt);
+  --text-primary: var(--d-text-primary);
+  --text-secondary: var(--d-text-secondary);
+  --text-tertiary: var(--d-text-tertiary);
+  --text-disabled: var(--d-text-disabled);
+  --control-fill: var(--d-control-fill);
+  --control-fill-secondary: var(--d-control-fill-secondary);
+  --control-fill-tertiary: var(--d-control-fill-tertiary);
+  --control-fill-disabled: var(--d-control-fill-disabled);
+  --control-solid: var(--d-control-solid);
+  --control-stroke: var(--d-control-stroke);
+  --control-stroke-secondary: var(--d-control-stroke-secondary);
+  --control-strong-fill: var(--d-control-strong-fill);
+  --control-strong-stroke: var(--d-control-strong-stroke);
+  --card-bg: var(--d-card-bg);
+  --card-stroke: var(--d-card-stroke);
+  --subtle-secondary: var(--d-subtle-secondary);
+  --subtle-tertiary: var(--d-subtle-tertiary);
+  --divider: var(--d-divider);
+  --accent: var(--d-accent);
+  --accent-text: var(--d-accent-text);
+  --accent-disabled: var(--d-accent-disabled);
+  --on-accent: var(--d-on-accent);
+  --on-accent-secondary: var(--d-on-accent-secondary);
+  --on-accent-disabled: var(--d-on-accent-disabled);
+  --layer: var(--d-layer);
+  --layer-on-acrylic: var(--d-layer-on-acrylic);
+  --stroke-on-accent: var(--d-stroke-on-accent);
+  --focus-outer: var(--d-focus-outer);
+  --focus-inner: var(--d-focus-inner);
+  --success: var(--d-success);
+  --success-bg: var(--d-success-bg);
+  --caution: var(--d-caution);
+  --caution-bg: var(--d-caution-bg);
+  --critical: var(--d-critical);
+  --critical-bg: var(--d-critical-bg);
+  --neutral: var(--d-neutral);
+  --neutral-bg: var(--d-neutral-bg);
+}
+
+/* ───────────────────────── Tailwind 语义层映射 ───────────────────────── */
+/* 保持 v1/v2 既有工具类名（bg-card / text-muted-foreground …）可用，
+   取值换成 WinUI 令牌，页面代码无需改动配色写法。 */
+
+@theme inline {
+  --color-background: var(--solid-base);
+  --color-foreground: var(--text-primary);
+  --color-card: var(--card-bg);
+  --color-card-foreground: var(--text-primary);
+  --color-popover: var(--solid-quarternary);
+  --color-popover-foreground: var(--text-primary);
+  --color-primary: var(--accent);
+  --color-primary-foreground: var(--on-accent);
+  --color-secondary: var(--control-fill); /* ⚠ 填充色，不是文字色：Tailwind 的 text-secondary 解析到这里
+                                             会得到 6% 白（深色主题）→ 文字几乎不可见。次级文字请用
+                                             text-muted-foreground 或 .win-secondary-text（= --text-secondary）。 */
+  --color-secondary-foreground: var(--text-primary);
+  --color-muted: var(--subtle-secondary);
+  --color-muted-foreground: var(--text-secondary);
+  --color-accent: var(--subtle-secondary);
+  --color-accent-foreground: var(--text-primary);
+  --color-destructive: var(--critical);
+  --color-destructive-foreground: #ffffff;
+  --color-success: var(--success);
+  --color-info: var(--accent-text);
+  --color-caution: var(--caution);
+  --color-border: var(--card-stroke);
+  --color-input: var(--control-stroke);
+  --color-ring: var(--accent);
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --font-sans:
+    'Segoe UI Variable Text', 'Segoe UI', system-ui, -apple-system, 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', sans-serif;
+}
+
+/* ───────────────────────── 基础排版与全局 ───────────────────────── */
+
+@layer base {
+  * {
+    border-color: var(--card-stroke);
+  }
+  html {
+    color-scheme: light;
+  }
+  html.theme-dark {
+    color-scheme: dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    html:not(.theme-light) {
+      color-scheme: dark;
+    }
+  }
+  body {
+    background-color: var(--solid-base);
+    color: var(--text-primary);
+    font-family:
+      'Segoe UI Variable Text', 'Segoe UI', system-ui, -apple-system, 'PingFang SC', 'Hiragino Sans GB',
+      'Microsoft YaHei', sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* WinUI 焦点视觉：外 2px + 内 1px 双色环（FocusVisualPrimary/SecondaryThickness），
+     贴着控件圆角绘制。用双层 box-shadow 实现：先 1px 内环，再 3px 外环（只露出外侧 2px）。
+     厚度与配色都要守住——单色粗环在深色主题下会变成一圈黑边，读起来像渲染故障。 */
+  :focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 1px var(--focus-inner),
+      0 0 0 3px var(--focus-outer);
+  }
+  /* 浮出层内部不画焦点环：WinUI 的焦点视觉属于被聚焦的控件，而列表/菜单项的高亮
+     用「填充」表达（见 .win-flyout-item 的高亮规则）。否则键盘导航时被聚焦的选项
+     会被套上一圈环，看起来像渲染错误。 */
+  [data-radix-popper-content-wrapper] :focus-visible,
+  [role='listbox']:focus-visible,
+  [role='menu']:focus-visible,
+  [role='dialog']:focus-visible {
+    box-shadow: none;
+  }
+  /* 强制色模式（Windows 高对比度）交回系统 outline */
+  @media (forced-colors: active) {
+    :focus-visible {
+      outline: 2px solid ButtonText;
+      box-shadow: none;
+    }
+  }
+
+  /* WinUI 滚动条：细拇指，悬停变粗 */
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: color-mix(in srgb, var(--text-primary) 40%, transparent);
+    border: 5px solid transparent;
+    border-radius: 999px;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: color-mix(in srgb, var(--text-primary) 60%, transparent);
+    border-width: 3px;
+  }
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+  ::selection {
+    background-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  }
+}
+
+/* ───────────────────────── WinUI 排版工具类 ───────────────────────── */
+
+@layer components {
+  /* WinUI 排版阶梯（Type Ramp） */
+  .win-caption {
+    font-size: 12px;
+    line-height: 16px;
+  }
+  .win-body {
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .win-body-strong {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+  }
+  .win-subtitle {
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 600;
+  }
+  .win-title {
+    font-size: 28px;
+    line-height: 36px;
+    font-weight: 600;
+  }
+  .win-title-large {
+    font-size: 40px;
+    line-height: 52px;
+    font-weight: 600;
+  }
+  .win-display {
+    font-size: 68px;
+    line-height: 92px;
+    font-weight: 600;
+  }
+  .win-secondary-text {
+    color: var(--text-secondary);
+  }
+  .win-tertiary-text {
+    color: var(--text-tertiary);
+  }
+  .win-meta {
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+  .win-divider {
+    height: 1px;
+    background-color: var(--divider);
+  }
+
+  /* ── NumberBox：右侧内联微调按钮 ──
+     规格取自 microsoft-ui-xaml：UpSpinButton / DownSpinButton 并排两列各 MinWidth 32，
+     与输入框之间、两按钮之间各 1px 分隔线（NumberBoxSpinButtonBorderThickness = 0,1,1,1） */
+  .win-numberbox {
+    position: relative;
+    display: inline-flex;
+    width: 100%;
+  }
+  .win-numberbox > input {
+    padding-right: 72px; /* 2 × 32 按钮 + 余量 */
+  }
+  .win-numberbox-spin {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    bottom: 1px;
+    display: flex;
+    overflow: hidden;
+    border-radius: 0 3px 3px 0;
+  }
+  .win-numberbox-spin > button {
+    display: grid;
+    width: 32px;
+    place-items: center;
+    border-left: 1px solid var(--control-stroke);
+    background-color: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: background-color 0.1s ease;
+  }
+  .win-numberbox-spin > button:hover {
+    background-color: var(--subtle-secondary);
+  }
+  .win-numberbox-spin > button:active {
+    background-color: var(--subtle-tertiary);
+  }
+  .win-numberbox-spin > button:disabled {
+    background-color: transparent;
+    color: var(--text-disabled);
+    cursor: not-allowed;
+  }
+
+  /* 无微调按钮的紧凑变体：纯输入框（padding 不再给按钮预留），高度 24px、宽 40px
+     （仅容两位数字、数字居中——比行内正文略大一点点），用于与文字并排的小数字框
+     （如单挑回合数）。padding 归零让单行文字在 24px 内垂直居中（继承的 4px 上下
+     padding 会让文字偏下） */
+  .win-numberbox--plain > input {
+    padding-right: 0;
+  }
+  .win-numberbox--sm {
+    width: 40px;
+  }
+  .win-numberbox--sm > input {
+    min-height: 24px;
+    height: 24px;
+    width: 100%;
+    padding: 0 4px;
+    line-height: 22px;
+    text-align: center;
+    border-radius: 4px;
+  }
+
+  /* 表单栅格单元（Label + 控件）：align-content:start 让控件保持 WinUI 规格高度。
+     grid 默认会把富余高度分给 auto 行 —— 同一行里只要有更高的单元格（说明文字、
+     附加开关等），本行的下拉框/输入框就会被拉长（32px → 40px+）。 */
+  .win-form-cell {
+    display: grid;
+    align-content: start;
+    gap: 6px;
+  }
+
+  /* WinUI 卡片 / 内容层 */
+  .win-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-stroke);
+    border-radius: 8px;
+    color: var(--text-primary);
+  }
+  .win-layer {
+    background-color: var(--solid-tertiary);
+    border: 1px solid var(--card-stroke);
+    border-radius: 8px;
+  }
+  /* 列表项 / 可点区块：WinUI 的 subtle 填充交互 */
+  .win-tile {
+    border-radius: 4px;
+    transition: background-color 0.1s ease;
+  }
+  .win-tile:hover {
+    background-color: var(--subtle-secondary);
+  }
+  .win-tile:active {
+    background-color: var(--subtle-tertiary);
+  }
+  .win-tile[data-selected='true'] {
+    background-color: var(--subtle-secondary);
+  }
+
+  /* ── Button：Standard / Accent / Subtle / Hyperlink ── */
+  .win-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 32px;
+    padding: 5px 11px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--control-stroke);
+    border-bottom-color: var(--control-stroke-secondary);
+    background-color: var(--control-fill);
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    transition:
+      background-color 0.1s ease,
+      border-color 0.1s ease,
+      color 0.1s ease;
+  }
+  .win-btn:hover {
+    background-color: var(--control-fill-secondary);
+  }
+  .win-btn:active {
+    background-color: var(--control-fill-tertiary);
+    color: var(--text-secondary);
+  }
+  .win-btn:disabled {
+    background-color: var(--control-fill-disabled);
+    color: var(--text-disabled);
+    border-color: var(--control-stroke);
+    cursor: not-allowed;
+  }
+  .win-btn-accent {
+    background-color: var(--accent);
+    color: var(--on-accent);
+    border-color: var(--stroke-on-accent);
+  }
+  .win-btn-accent:hover {
+    background-color: color-mix(in srgb, var(--accent) 90%, transparent);
+  }
+  .win-btn-accent:active {
+    background-color: color-mix(in srgb, var(--accent) 80%, transparent);
+    color: var(--on-accent-secondary);
+  }
+  .win-btn-accent:disabled {
+    background-color: var(--accent-disabled);
+    color: var(--on-accent-disabled);
+    border-color: transparent;
+  }
+  .win-btn-subtle {
+    background-color: transparent;
+    border-color: transparent;
+  }
+  .win-btn-subtle:hover {
+    background-color: var(--subtle-secondary);
+  }
+  .win-btn-subtle:active {
+    background-color: var(--subtle-tertiary);
+  }
+  .win-btn-subtle:disabled {
+    background-color: transparent;
+    color: var(--text-disabled);
+  }
+  .win-btn-danger {
+    color: var(--critical);
+  }
+  .win-btn-danger:hover {
+    background-color: var(--critical-bg);
+  }
+  .win-btn-link {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--accent-text);
+    padding: 5px 2px 6px;
+    min-height: 0;
+    text-decoration: none;
+  }
+  .win-btn-link:hover {
+    text-decoration: underline;
+    background-color: transparent;
+  }
+
+  /* ── TextBox / PasswordBox / ComboBox 共用的输入外观 ── */
+  .win-field {
+    width: 100%;
+    min-height: 32px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--control-stroke);
+    border-bottom: 1px solid var(--control-stroke-secondary);
+    background-color: var(--control-fill);
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 20px;
+    transition:
+      background-color 0.1s ease,
+      border-color 0.1s ease;
+  }
+  .win-field::placeholder {
+    color: var(--text-tertiary);
+  }
+  .win-field:hover {
+    background-color: var(--control-fill-secondary);
+  }
+  .win-field:focus {
+    outline: none;
+    background-color: var(--solid-quarternary);
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 3px;
+  }
+  .win-field:disabled {
+    background-color: var(--control-fill-disabled);
+    color: var(--text-disabled);
+    cursor: not-allowed;
+  }
+  textarea.win-field {
+    padding: 6px 10px;
+    resize: vertical;
+  }
+
+  /* ── CheckBox ── */
+  .win-checkbox {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    flex: none;
+    border-radius: 4px;
+    border: 1px solid var(--control-strong-stroke);
+    background-color: var(--control-fill);
+    cursor: pointer;
+    transition:
+      background-color 0.1s ease,
+      border-color 0.1s ease;
+  }
+  .win-checkbox:hover {
+    background-color: var(--control-fill-secondary);
+  }
+  .win-checkbox:checked {
+    background-color: var(--accent);
+    border-color: var(--accent);
+  }
+  .win-checkbox:checked::after {
+    content: '';
+    display: block;
+    width: 5px;
+    height: 10px;
+    margin: 1px 0 0 6px;
+    border: solid var(--on-accent);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .win-checkbox:disabled {
+    background-color: var(--control-fill-disabled);
+    border-color: var(--text-disabled);
+    cursor: not-allowed;
+  }
+
+  /* ── ToggleSwitch（WinUI 开关：40×20 轨道 + 12px 旋钮，20px 行程） ── */
+  .win-switch {
+    appearance: none;
+    position: relative;
+    width: 40px;
+    height: 20px;
+    flex: none;
+    border-radius: 10px;
+    border: 1px solid var(--control-strong-stroke);
+    background-color: transparent;
+    cursor: pointer;
+    transition: background-color 0.12s ease;
+  }
+  .win-switch::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--control-strong-fill);
+    transition:
+      transform 0.15s cubic-bezier(0.2, 0, 0, 1),
+      background-color 0.12s ease,
+      width 0.12s ease;
+  }
+  .win-switch:hover::before {
+    width: 14px;
+  }
+  .win-switch:checked {
+    background-color: var(--accent);
+    border-color: var(--accent);
+  }
+  .win-switch:checked::before {
+    transform: translateX(20px);
+    background-color: var(--on-accent);
+  }
+  .win-switch:checked:hover::before {
+    width: 14px;
+    transform: translateX(18px);
+  }
+  .win-switch:disabled {
+    border-color: var(--text-disabled);
+    cursor: not-allowed;
+  }
+  .win-switch:disabled::before {
+    background-color: var(--text-disabled);
+  }
+  .win-switch:disabled:checked {
+    background-color: var(--accent-disabled);
+    border-color: transparent;
+  }
+
+  /* ── RadioButton ── */
+  .win-radio {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    flex: none;
+    border-radius: 50%;
+    border: 1px solid var(--control-strong-stroke);
+    background-color: var(--control-fill);
+    cursor: pointer;
+  }
+  .win-radio:checked {
+    border-width: 6px;
+    border-color: var(--accent);
+  }
+
+  /* ── 覆盖层：ContentDialog / Flyout ──
+     层级（z-index）全局约定 —— 新组件必须遵守，否则会出现「浮层被对话框盖住」：
+       40  TitleBar（吸顶）
+       50  导航抽屉遮罩
+       60  ContentDialog 遮罩 + 面板
+       70  **浮出层**：ComboBox/Select 下拉、MenuFlyout、Tooltip（必须高于 60 —— 对话框内的
+           ComboBox 一样要能展开在对话框之上，这是 WinUI 里「后开的弹层在最上」的等价物）
+       90  槽位右键菜单（可能在对话框之上再开一层）
+      100  Toast 通知栈（永远最上）
+     用 Tailwind 的 `z-40/50/[60]/[70]/[90]/[100]` 写；改动层级前先看这张表。 */
+  .win-overlay {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  .win-dialog {
+    background-color: var(--solid-tertiary);
+    border: 1px solid var(--card-stroke);
+    border-radius: 8px;
+    color: var(--text-primary);
+  }
+  .win-flyout {
+    background-color: var(--solid-quarternary);
+    border: 1px solid var(--card-stroke);
+    border-radius: 8px;
+    color: var(--text-primary);
+    padding: 4px;
+  }
+  .win-flyout-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 32px;
+    padding: 6px 11px;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--text-primary);
+    cursor: pointer;
+    text-align: left;
+  }
+  /* WinUI 的高亮语义：悬停 / 键盘导航（Radix 的 data-highlighted）/ 焦点 / 已选中 → 填充。
+     不画焦点环——列表与菜单靠填充表达"当前在哪一项"。 */
+  .win-flyout-item:hover,
+  .win-flyout-item:focus-visible,
+  .win-flyout-item[data-highlighted],
+  .win-flyout-item[data-state='checked'] {
+    background-color: var(--subtle-secondary);
+  }
+  .win-flyout-item[data-disabled='true'] {
+    color: var(--text-disabled);
+    cursor: not-allowed;
+  }
+  .win-flyout-item[data-danger='true'] {
+    color: var(--critical);
+  }
+
+  /* ── InfoBar：WinUI 通知条（success/caution/critical/neutral） ── */
+  .win-infobar {
+    display: flex;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 4px;
+    border: 1px solid var(--card-stroke);
+    background-color: var(--solid-tertiary);
+    color: var(--text-primary);
+  }
+  .win-infobar[data-severity='success'] {
+    background-color: var(--success-bg);
+  }
+  .win-infobar[data-severity='caution'] {
+    background-color: var(--caution-bg);
+  }
+  .win-infobar[data-severity='critical'] {
+    background-color: var(--critical-bg);
+  }
+
+  /* ── Markdown 内容（首页卡片）：marked 解析 + DOMPurify 消毒后的排版 ──
+     字号走 WinUI Type Ramp（Title 28 / Subtitle 20 / Body 14 / Caption 12），
+     颜色/描边全部用主题令牌，浅深两套自动跟随 */
+  .win-markdown {
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 20px;
+    overflow-wrap: anywhere;
+  }
+  .win-markdown > :first-child {
+    margin-top: 0;
+  }
+  .win-markdown > :last-child {
+    margin-bottom: 0;
+  }
+  .win-markdown h1,
+  .win-markdown h2,
+  .win-markdown h3,
+  .win-markdown h4,
+  .win-markdown h5,
+  .win-markdown h6 {
+    font-weight: 600;
+    text-wrap: balance;
+  }
+  .win-markdown h1 {
+    margin: 20px 0 8px;
+    font-size: 28px;
+    line-height: 36px;
+  }
+  .win-markdown h2 {
+    margin: 16px 0 6px;
+    font-size: 20px;
+    line-height: 28px;
+  }
+  .win-markdown h3 {
+    margin: 14px 0 4px;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .win-markdown h4,
+  .win-markdown h5,
+  .win-markdown h6 {
+    margin: 12px 0 4px;
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--text-secondary);
+  }
+  .win-markdown p {
+    margin: 8px 0;
+  }
+  .win-markdown a {
+    color: var(--accent-text);
+    text-decoration: none;
+  }
+  .win-markdown a:hover {
+    text-decoration: underline;
+  }
+  .win-markdown strong {
+    font-weight: 600;
+  }
+  .win-markdown em {
+    font-style: italic;
+  }
+  .win-markdown del {
+    color: var(--text-secondary);
+  }
+  .win-markdown ul,
+  .win-markdown ol {
+    margin: 8px 0;
+    padding-left: 22px;
+  }
+  .win-markdown ul {
+    list-style: disc;
+  }
+  .win-markdown ol {
+    list-style: decimal;
+  }
+  .win-markdown li {
+    margin: 4px 0;
+  }
+  .win-markdown li::marker {
+    color: var(--text-secondary);
+  }
+  .win-markdown li > ul,
+  .win-markdown li > ol {
+    margin: 4px 0;
+  }
+  .win-markdown blockquote {
+    margin: 8px 0;
+    padding: 2px 0 2px 12px;
+    border-left: 2px solid var(--accent);
+    color: var(--text-secondary);
+  }
+  .win-markdown code {
+    padding: 1px 4px;
+    border-radius: 3px;
+    background-color: var(--subtle-secondary);
+    font-family: ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace;
+    font-size: 12px;
+  }
+  .win-markdown pre {
+    margin: 8px 0;
+    padding: 10px 12px;
+    border: 1px solid var(--card-stroke);
+    border-radius: 4px;
+    background-color: var(--subtle-secondary);
+    overflow-x: auto;
+  }
+  .win-markdown pre code {
+    padding: 0;
+    background: none;
+    font-size: 12px;
+    line-height: 18px;
+  }
+  .win-markdown hr {
+    margin: 12px 0;
+    border: 0;
+    border-top: 1px solid var(--divider);
+  }
+  .win-markdown table {
+    margin: 8px 0;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .win-markdown th,
+  .win-markdown td {
+    padding: 4px 8px;
+    border: 1px solid var(--card-stroke);
+    text-align: left;
+  }
+  .win-markdown th {
+    background-color: var(--subtle-secondary);
+    font-weight: 600;
+  }
+  .win-markdown img {
+    max-width: 100%;
+    border-radius: 4px;
+  }
+  .win-markdown input[type='checkbox'] {
+    margin-right: 6px;
+    accent-color: var(--accent);
+  }
+
+  /* ── ProgressBar ── */
+  .win-progress {
+    position: relative;
+    height: 4px;
+    width: 100%;
+    border-radius: 2px;
+    background-color: var(--control-strong-fill);
+    overflow: hidden;
+  }
+  .win-progress > span {
+    display: block;
+    height: 100%;
+    border-radius: 2px;
+    background-color: var(--accent);
+    transition: width 0.2s ease;
+  }
+  /* 警示态（磁盘余量低于更新阈值等）：填充换语义红，尺寸不变 */
+  .win-progress-critical > span {
+    background-color: var(--critical);
+  }
+  /* 进行中但需注意（如任务取消中）：填充换语义黄 */
+  .win-progress-caution > span {
+    background-color: var(--caution);
+  }
+  /* WinUI 不确定态：滑块来回扫过 */
+  .win-progress-indeterminate > span {
+    width: 40% !important;
+    animation: win-progress-slide 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  @keyframes win-progress-slide {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(350%);
+    }
+  }
+  /* 不确定态前的“小点”，WinUI 不确定进度条的标志性元素 */
+  .win-progress-dot {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 4px;
+    width: 4px;
+    border-radius: 2px;
+    background-color: var(--accent);
+    animation: win-progress-dot 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  @keyframes win-progress-dot {
+    0% {
+      transform: translateX(0);
+    }
+    90%,
+    100% {
+      transform: translateX(0);
+      opacity: 0;
+    }
+  }
+
+  /* ── ProgressRing ──
+     WinUI 不确定环：浅灰轨道（ControlStrongStrokeColorDefault 一脉）+ 强调色圆弧，
+     圆弧边旋转边伸长再收回（r=8.5 → 周长 53.4）。描边端点用圆头，与 WinUI 的渲染一致。 */
+  .win-ring {
+    display: inline-block;
+    vertical-align: middle;
+    animation: win-ring-rotate 1.6s linear infinite;
+  }
+  .win-ring-track {
+    stroke: var(--control-strong-fill);
+  }
+  .win-ring-arc {
+    stroke: var(--accent);
+    animation: win-ring-arc 1.6s ease-in-out infinite;
+  }
+  @keyframes win-ring-rotate {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  /* dasharray 从「一点点」长到约 60% 周长，再收回；dashoffset 同步走满一圈（0 与 -53.4 视觉等价） */
+  @keyframes win-ring-arc {
+    0% {
+      stroke-dasharray: 1 52.4;
+      stroke-dashoffset: 0;
+    }
+    50% {
+      stroke-dasharray: 32 21.4;
+      stroke-dashoffset: -13;
+    }
+    100% {
+      stroke-dasharray: 1 52.4;
+      stroke-dashoffset: -53.4;
+    }
+  }
+
+  /* ── 动画 ── */
+  .win-anim-flyout {
+    animation: win-flyout-in 0.14s cubic-bezier(0, 0, 0, 1) both;
+  }
+  @keyframes win-flyout-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .win-anim-dialog {
+    animation: win-dialog-in 0.18s cubic-bezier(0, 0, 0, 1) both;
+  }
+  @keyframes win-dialog-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  .win-anim-toast {
+    animation: win-toast-in 0.2s cubic-bezier(0, 0, 0, 1) both;
+  }
+  @keyframes win-toast-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ── 状态点：保持「进行中」等实时语义，但改为 WinUI 的圆点 + 光晕 ── */
+  .win-dot-live {
+    position: relative;
+  }
+  .win-dot-live::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: inherit;
+    animation: win-dot-pulse 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+  @keyframes win-dot-pulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.6;
+    }
+    80%,
+    100% {
+      transform: scale(2.4);
+      opacity: 0;
+    }
+  }
+
+  /* ── NavigationView ── */
+  .win-nav {
+    background-color: var(--solid-base);
+  }
+  .win-nav-pane {
+    background-color: var(--layer);
+    border-right: 1px solid var(--card-stroke);
+  }
+  .win-nav-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 36px;
+    padding: 0 12px;
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.1s ease;
+  }
+  .win-nav-item:hover {
+    background-color: var(--subtle-secondary);
+  }
+  .win-nav-item[data-active='true'] {
+    background-color: var(--subtle-secondary);
+    font-weight: 600;
+  }
+  /* 选中指示条：3×16 的强调色竖条 */
+  .win-nav-item[data-active='true']::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 3px;
+    height: 16px;
+    border-radius: 2px;
+    background-color: var(--accent);
+    transform: translateY(-50%) translateX(-4px);
+  }
+  .win-titlebar {
+    background-color: var(--solid-base);
+    border-bottom: 1px solid var(--divider);
+  }
+  .win-commandbar {
+    background-color: var(--solid-secondary);
+    border-top: 1px solid var(--divider);
+  }
+
+  /* ── 徽章（InfoBadge 语义的胶囊） ── */
+  .win-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--card-stroke);
+    background-color: var(--subtle-secondary);
+    color: var(--text-secondary);
+    font-size: 12px;
+    line-height: 16px;
+    white-space: nowrap;
+  }
+  .win-badge-accent {
+    background-color: var(--accent);
+    border-color: transparent;
+    color: var(--on-accent);
+  }
+  .win-badge-success {
+    background-color: var(--success-bg);
+    border-color: transparent;
+    color: var(--success);
+  }
+  .win-badge-caution {
+    background-color: var(--caution-bg);
+    border-color: transparent;
+    color: var(--caution);
+  }
+  /* 实心警示底（SystemFillColorSolidCautionBackground 的语气）：文字用「实心底上的前景」，
+     故深色下是黑字（亮黄底）、浅色下是白字（深琥珀底）——与强调按钮同一条规则。
+     与柔和 caution 并用时可区分两种黄色语义（实例「待确认」vs「删除中」） */
+  .win-badge-caution-solid {
+    background-color: var(--caution);
+    border-color: transparent;
+    color: var(--on-accent);
+  }
+  .win-badge-critical {
+    background-color: var(--critical-bg);
+    border-color: transparent;
+    color: var(--critical);
+  }
+
+  /* ── 队伍色轨：保留 CT/T 语义色（WinUI 侧用 Fluent 蓝/橙） ── */
+  .win-rail-ct {
+    background-color: #4cc2ff;
+  }
+  .win-rail-t {
+    background-color: #f7a501;
+  }
+}

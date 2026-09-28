@@ -1,0 +1,47 @@
+name: cs-arena
+
+services:
+  cs-arena:
+    image: ${BACKEND_IMAGE:-cubelightt/cs-arena-backend}:${ARENA_VERSION:-v1.0}
+    env_file: .env
+    user: "${PUID:-1000}:${PGID:-1000}"
+    environment:
+      NODE_ENV: production
+      PORT: "8080"
+      DB_PATH: /var/lib/arena/arena.db
+      DEMO_STORAGE_DIR: /var/lib/arena/demos
+      MAP_IMAGE_DIR: /var/lib/arena/map-images
+    volumes:
+      - type: bind
+        source: ${DATA_DIR:-./data}
+        target: /var/lib/arena
+        bind:
+          create_host_path: false
+    networks:
+      default:
+        aliases:
+          - backend
+    expose:
+      - "8080"
+    restart: unless-stopped
+    init: true
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:8080/api/health', {signal: AbortSignal.timeout(4000)}).then(r => {if (!r.ok) process.exit(1)}).catch(() => process.exit(1))"
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  cs-arena-web:
+    image: ${FRONTEND_IMAGE:-cubelightt/cs-arena-frontend}:${ARENA_VERSION:-v1.0}
+    ports:
+      - "${HTTP_BIND:-0.0.0.0}:${HTTP_PORT:-18081}:80"
+    depends_on:
+      cs-arena:
+        condition: service_healthy
+        restart: true
+    restart: unless-stopped

@@ -1,0 +1,20 @@
+name: cs-arena-build
+
+services:
+  cs-arena:
+    image: ${BACKEND_IMAGE:-cubelightt/cs-arena-backend}:${ARENA_VERSION:-v1.0}
+    build:
+      context: .
+      dockerfile: deploy/docker/backend.Dockerfile
+      args:
+        SOURCE_REVISION: ${SOURCE_REVISION:-unknown}
+        APP_VERSION: ${ARENA_VERSION:-v1.0}
+
+  cs-arena-web:
+    image: ${FRONTEND_IMAGE:-cubelightt/cs-arena-frontend}:${ARENA_VERSION:-v1.0}
+    build:
+      context: .
+      dockerfile: deploy/docker/frontend.Dockerfile
+      args:
+        SOURCE_REVISION: ${SOURCE_REVISION:-unknown}
+        APP_VERSION: ${ARENA_VERSION:-v1.0}

@@ -1,0 +1,25 @@
+{
+  "name": "arena-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "CS2 Arena web backend - MatchZy integration",
+  "scripts": {
+    "start": "node server.js",
+    "smoke": "node scripts/smoke.mjs"
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "sharp": "^0.35.4",
+    "socket.io": "^4.8.1",
+    "undici": "^7.9.0",
+    "ws": "^8.21.3"
+  },
+  "devDependencies": {
+    "socket.io-client": "^4.8.3"
+  },
+  "license": "GPL-3.0-only"
+}
