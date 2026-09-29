@@ -4,6 +4,46 @@ CS Arena 是 Counter-Strike 2 比赛管理平台，由 Node.js 后端和 WinUI �
 
 游戏主机使用 [CS Arena Agent](https://github.com/cubelightt/cs-arena-agent) 连接平台，比赛由 [ArenaMatch](https://github.com/cubelightt/cs-arena-match) 插件执行。
 
+## 架构与通信
+
+下图以 Docker Compose 部署为例。前端容器提供网页入口，后端容器处理房间、比赛和数据；Agent 与 ArenaMatch 运行在游戏主机。
+
+```mermaid
+flowchart LR
+    browser["浏览器<br/>WinUI 网页"]
+    client["CS2 客户端"]
+
+    subgraph platform["平台主机 · Docker Compose"]
+        web["前端容器 · Nginx<br/>静态页面 / 反向代理"]
+        api["后端容器 · Node.js<br/>REST / Socket.IO / 比赛编排"]
+        data[("持久化目录<br/>SQLite / Demo / 地图图片")]
+    end
+
+    subgraph host["CS2 游戏主机"]
+        agent["CS Arena Agent · Go"]
+        manager["多实例管理<br/>启停 / 控制台 / 文件"]
+        subgraph instance["CS2 实例"]
+            server["CS2 服务端"]
+            plugin["ArenaMatch 插件"]
+        end
+    end
+
+    browser <-->|"页面 / REST API / Socket.IO"| web
+    web <-->|"代理 /api/ 和 /socket.io/"| api
+    api <-->|"读写"| data
+
+    agent <-->|"主动建立 /api/agent WebSocket<br/>命令 / 结果 / 状态"| web
+    agent -->|"POST /api/events 和 /api/demos"| web
+    agent -->|"实例操作"| manager
+    manager -->|"进程 / 控制台 / 文件"| server
+    agent <-->|"本机 IPC：绑定 / 装载 / 事件 / Demo 通知"| plugin
+
+    browser -->|"唤起 steam://connect"| client
+    client <-->|"游戏连接 / GOTV"| server
+```
+
+Agent 主动连接平台，后端通过同一条 WebSocket 下发实例与比赛命令；ArenaMatch 的事件和 Demo 通知先交给 Agent，再由 Agent 上传到后端。玩家的 CS2 客户端直接连接游戏实例。
+
 ## 运行要求
 
 - Node.js 22.13 或更新版本、npm。
